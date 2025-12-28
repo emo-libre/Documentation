@@ -1,0 +1,53 @@
+# utilities
+
+## Parameters
+- utility_type:
+    - alarm
+    - timer
+    - battery
+    - update
+    - date
+    - time
+    - light
+    - volume
+    - weather
+- alarm:
+    - operation: 
+        - check
+        - set
+        - remove
+    - time: \<*time, format 00:00*>
+    - recurrence:
+        - TUE
+        - FRI
+    - tag:
+        - alarm
+    - index: \<*number or empty*>
+- update:
+    - operation:
+        - check
+        - update
+- time: \<*empty?!*>
+- light:
+    - operation:
+        - off
+        - set_hsl
+    - hsl:
+        - 0: \<*number 0-330*>
+        - 1: \<*number 0-100*>
+        - 1: \<*number 0-100*>
+    - room: \<*empty?!*>
+- volume:
+    - operation:
+        - max
+        - mid
+        - min
+        - mute
+- weather:
+    - main:
+        - sunny
+        - cloudy
+    - temp: \<*float with 2 digits; sperator is a dot*>
+- timer:
+    - operation: set
+    - duration: \<*number*>
