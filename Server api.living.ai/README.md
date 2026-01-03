@@ -13,6 +13,8 @@ Server-URL: api.living.ai
 - /emo/
     - Main api for emo
     - emo sends a Secret and Authorization as headers with every request
+    - query id is not required to come from official servers for emo to process the request.
+    - result code in query resuslt is not required to come from official servers for emo to process the request.
 
 ## Requests from Emo:
 All requests from emo to this server are made over https, but without any checks of the certificate. With every request emo sends the following http header:
