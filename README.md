@@ -1,6 +1,7 @@
 # Documentation
 We keep documentation on our findings.
 - [How to capture](/HowToCapture.md) - How to capture, study, and analyze information sent to and from EMO.
+- [How to decompile](/DecompileFWs.md) - How to decompile EMOs firmwares with Ghidra.
 - [Our assumptions](/Assumptions.md) - Various assumptions we have made, aka educated guesses.
 
 ## Sections
