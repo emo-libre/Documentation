@@ -29,6 +29,85 @@
         - canWrite:True  
         - canNotify:True  
 
+## Theater mode json requests
+Enter theater mode:
+{
+  "type": "theater_req",
+  "data": {
+    "op": "in"
+  }
+}
+Exit theater mode:
+{
+  "type": "theater_req",
+  "data": {
+    "op": "out"
+  }
+}
+Make EMO speak using TTS:
+{
+  "type": "theater_req",
+  "data": {
+    "op": "speak",
+    "txt": "Hello"
+  }
+}
+Movement controls (continuous until stopped):
+
+Move forward:
+
+{
+  "type": "theater_req",
+  "data": {
+    "op": "forward"
+  }
+}
+
+Move backward:
+
+{
+  "type": "theater_req",
+  "data": {
+    "op": "back"
+  }
+}
+
+Turn left:
+
+{
+  "type": "theater_req",
+  "data": {
+    "op": "left"
+  }
+}
+
+Turn right:
+
+{
+  "type": "theater_req",
+  "data": {
+    "op": "right"
+  }
+}
+
+Stop movement:
+
+{
+  "type": "theater_req",
+  "data": {
+    "op": "stop"
+  }
+}
+If EMO responds with:
+{
+  "type": "theater_rsp",
+  "data": {
+    "result": 10
+  }
+}
+Then emo is not in theater mode and you need to enter theater mode to do any of these commands
+
+
 ## text commands:  
 - write to 0000ffe1
 - responses delivered over notifications
