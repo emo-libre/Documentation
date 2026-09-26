@@ -107,6 +107,48 @@ If EMO responds with:
 }
 Then emo is not in theater mode and you need to enter theater mode to do any of these commands
 
+### Playing animations: op "play" with an "animations" list
+
+Theater mode also accepts `op: "play"`, whose value is a **list** of animation names. Enter theater mode
+first, then send:
+
+```json
+{"type": "theater_req", "data": {"op": "play", "animations": ["Daily_Boxing_loop4"]}}
+```
+
+- `animations` is a **list**, played in order. A multi-part animation is sent as its parts:
+  `["Daily_banana_start", "Daily_banana_loop1", "Daily_banana_end"]`.
+- Two replies follow: `{"type":"theater_rsp","data":{"result":1}}` acknowledges the request, then
+  `result: 2` means the animation has finished.
+- **Do not send `op: "out"` before `result: 2`** — leaving theater mode cuts the animation short (the
+  boxing animation lasted "barely a second" until we waited for the second reply).
+- The names are the robot's **own** animation names. The `animation_name` values in
+  [`Animations/`](/Animations) are aliases of the *intent* layer (`play_animation`), and are refused
+  here **silently** — no error reply, the animation simply does not play (`boxing` is not accepted,
+  `Daily_Boxing_loop4` is). The valid names come from the firmware's `TheaterAnimsUtil` table, as
+  transcribed in [JoVe13's run.py](https://github.com/JoVe13/Emo-Scripts/blob/main/run.py).
+
+Verified on a real EMO, each one confirmed by watching the robot:
+
+| `animations` sent | plays |
+|---|---|
+| `Daily_Boxing_loop4` | boxing |
+| `Daily_Blending_loop3` + `Daily_Blending_end` | bartending |
+| `Daily_banana_start` + `Daily_banana_loop1` + `Daily_banana_end` | eating a banana |
+| `DJ1_ready` + `DJ1_loop2` | DJ |
+| `Daily_hypnosis_start` + `Daily_hypnosis_loop1` + `Daily_hypnosis_end` | hypnosis |
+| `Daily_poop_start` + `Daily_poop_loop1` + `Daily_poop_end` | the "poop" animation |
+| `laser_eye_2` | laser eyes |
+| `game_firework_end` | fireworks |
+| `Camp_tent` | camping tent |
+| `interact_emotion_hug` | a hug |
+
+That is 10 of the 124 names in the table. Some animations run longer than 15 s before `result: 2`
+arrives, so allow a generous timeout rather than assuming the reply was lost.
+
+Note: none of the messages the cloud sends (see [`Intents/`](/Intents)) carries these animations — which
+is not evidence that the robot refuses them, the two paths are independent.
+
 
 ## text commands:  
 - write to 0000ffe1
