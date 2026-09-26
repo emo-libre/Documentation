@@ -170,7 +170,10 @@ That is 10 of the 124 names in the table. Some animations run longer than 15 s b
 arrives, so allow a generous timeout rather than assuming the reply was lost.
 
 Note: none of the messages the cloud sends (see [`Intents/`](/Intents)) carries these animations — which
-is not evidence that the robot refuses them, the two paths are independent.
+is not evidence that the robot refuses them, the two paths are independent. There is even a **third**
+path: left in its autonomous ("free play") mode, EMO started the cooking animation **on its own**, with
+no request from the app, the cloud or the Bluetooth link. These animations are therefore not reachable
+*only* through the theater channel: they are the robot's own repertoire, whichever path asks first.
 
 
 ## text commands:  
