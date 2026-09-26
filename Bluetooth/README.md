@@ -4,6 +4,29 @@
 - Device name is "EMO-" and the last 2 Bytes in hex from the Bluetooth adress.
 - EMO uses LE Advertisements and GATT
 
+## Connecting reliably
+
+Four behaviours make "just scan and connect" fail. All observed on a real EMO, with no cloud involved:
+
+- **The address is not a stable identifier.** Two connections twenty seconds apart succeeded on two
+  different addresses (rotating private addresses). Look the robot up by its advertised **name**, or
+  retry the address once — never pin one.
+- **It advertises under more than one name.** The same robot can appear as `EMO-XXXX` and as
+  `EMO_SPEAKER_XXXX` — a second façade of the *same* device, which answers the command characteristic
+  either way. Accept both and let the connection decide; filtering one out loses working connections.
+- **`ESP-BLE-MESH` is not the robot, it is its charging station.** It has **no command
+  characteristic** (`0000ffe1` missing), so a scan that keeps "the first EMO-ish device found" can
+  land on it and fail with a characteristic-not-found error.
+- **A host-connected robot stops advertising.** If the host knows it as a *Trusted* device, BlueZ
+  reconnects it on its own; a connected device no longer advertises, so every scan comes back blind —
+  and it looks like the robot vanished. Disconnect (and untrust) it on the host before scanning;
+  pairing itself can stay.
+- **While asleep, the Bluetooth radio is off.** Its Wi-Fi still answers, so the robot looks present
+  while BLE finds nothing: wake it first — voice, petting, or the charging station.
+
+A connected robot also accepts a single master in practice: open the link, play, then release it,
+rather than holding the connection.
+
 ## GATT Services and Characteristics:  
 - 00001801-0000-1000-8000-00805f9b34fb  
     - 00002a05-0000-1000-8000-00805f9b34fb  
@@ -222,6 +245,10 @@ is not evidence that the robot refuses them, the two paths are independent.
 ### {"type":"off_req"}:  
 - on skateboard, no shutdown => {"type":"off_rsp","data":{"result":0}}
 - off skateboard, power down => {"type":"off_rsp","data":{"result":1}}
+- the **charging station triggers the same refusal** as the skateboard, so "on the skateboard" is
+  really "not free on the floor": on the station => result 0, put down on the floor => result 1
+- once it powers down it also stops answering on Wi-Fi, which is a handy confirmation that it really
+  went off rather than merely refusing
 
 ### {"data":{"code":"","name":"Europe/Berlin","offset":7200},"type":"timezone_set"}:
 - todo
