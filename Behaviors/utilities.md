@@ -11,6 +11,7 @@
     - light
     - volume
     - weather
+    - news
 - alarm:
     - operation: 
         - check
@@ -51,3 +52,6 @@
 - timer:
     - operation: set
     - duration: \<*number*>
+- news:
+    - count: \<*number*>
+    - urls: list of {id, url}

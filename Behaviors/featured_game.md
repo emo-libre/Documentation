@@ -6,3 +6,5 @@
     - fix_bugs
     - shot
     - ttt
+    - drawing
+    - zombie
