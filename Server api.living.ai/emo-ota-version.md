@@ -5,7 +5,7 @@ Check for new firmware.
 
 ### Sample Request:
 **URL:** GET /emo/ota/version?type=1&version_num=42 HTTP/1.0  
-- Parameter *type* = always 1 (firmware 3.x)
+- Parameter *type* = 1 if boot request, 0 if user-requested (firmware 3.x)
 - Parameter *version_num* = current firmware version (firmware 3.x)  
 
 **Headers:**  
@@ -14,4 +14,4 @@ Check for new firmware.
 
 ### Sample Response:
 {"version-name":"1.4.0","version-num":21}
-firmware 3.x: {"version-name":"1.1.1","version-num":1}
+When type is 1 seems to be always {"version-name":"1.1.1","version-num":1}
