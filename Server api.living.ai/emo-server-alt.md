@@ -14,3 +14,4 @@ Get alternative api servers.
 
 ### Sample Response:
 {"servers":["us-api.living.ai","eu-api.living.ai","as-api.living.ai"],"switch":""}
+firmware 3.x: *switch* can contain the api server to use, e.g. "switch":"api.living.ai"

@@ -19,5 +19,27 @@ The Data that emo sends differs, here are 2 samples:
 - {"ver":21,"city":"Bonn","tzone":"Europe/Berlin","lang":"","age":42,"wkup":378,"kcrash":"0/0.84","batt":3720,"drop":0,"beh":26,"touch":[1000,1000,1000],"dis":440,"cliff":[1000,900,1200,700],"mpu":[1,7,50],"wifi":-55,"geo":120.38643646240234,"mic":[0,0,0,0]}
 - {"ver":21,"city":"Bonn","tzone":"Europe/Berlin","lang":"","age":42,"wkup":386,"kcrash":"0/3.77","batt":3900,"drop":0,"beh":31,"touch":[1000,1000,1000],"wifi":-60,"mic":[0,0,0,0]}
 
+Firmware 3.2.0 (ver 42) sends additional fields:
+- {"ver":42,"city":"Berlin","tzone":"Europe/Berlin","lang":"","age":42,"wkup":120,"kcrash":"0/0.3","batt":3244,"drop":0,"beh":25,"touch":[0,0,0],"wifi":-51,"mic":[0,0,0,0],"err":1,"esp":"3.2.0","ken":"3.2.0"}
+
+Fields (firmware 3.x):
+| Field | Description |
+|---|---|
+| ver | firmware version number (42) |
+| city, tzone, lang | configured city, timezone, language ("" in all captures) |
+| age | probably age in days |
+| wkup | wake-up counter |
+| kcrash | "\<n>/\<float>" |
+| batt | battery (probably in mV) |
+| drop | 0 |
+| beh | possibly behaviour counter (23..26) |
+| touch | 3 touch sensor values |
+| wifi | RSSI in dBm |
+| mic | 4 values, all 0 |
+| err | 1 |
+| esp | ESP32 firmware version ("3.2.0") |
+| ken | K210 firmware version ("3.2.0") |
+| dis, cliff, mpu, geo | only sent while emo is on a table / moving: distance sensor, 4 cliff sensors, 3 IMU values, float |
+
 ### Sample Response:
 {"result":"OK"}

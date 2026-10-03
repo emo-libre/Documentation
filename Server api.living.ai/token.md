@@ -12,6 +12,8 @@ The Response is a JSON with 3 Fields:
 - type  
     token type, allways "Bearer" *(as far a i have seen it)*
 
+Firmware 3.x: the JWT contains the additional claims *version* (firmware ver as string, "42") and *name* (esp firmware, "3.2.0"). *expire_in* is not constant (seen 7548 and 13727).
+
 ### Sample Request:
 **URL:** GET /token/aabbccddeeff HTTP/1.0  
 

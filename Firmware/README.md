@@ -1,12 +1,30 @@
-# Firmwares
+# Firmware
 
-## 3.1.0 - EMO becomes a news anchor
+Everything about EMO's firmware: the released versions, where to download them, and what we learned by decompiling them.
+
+## Pages
+
+- [Version history](#version-history): every released firmware with its date, download link and changelog.
+- [Firmware analysis overview](#firmware-analysis-overview): hardware split, evidence legend, task list.
+- [Strings and addresses](strings_and_addresses.md): string and function addresses per subsystem (servo, eyes/face, audio, mic, touch, GPIO, storage), for finding your way in Ghidra.
+- [K210 protocol](k210_protocol.md): ESP32 ↔ K210 UART messages, face recognition, K210 OTA.
+- [Animation system](animation_system.md): `.avi`/`.mot` playback, the motion file format, animation names, triggers, interrupts.
+- [Idle behavior](idle_behavior.md): what EMO does by himself: explore, free play, vigilant mode, sleep and wake-up.
+- [Libraries](libraries.md): ESP-IDF, ESP-ADF, Bluedroid and the other components inside the ESP32 firmware.
+- [Extraction](extraction.md): getting the animation, audio and config files out of the SPIFFS partition ([scripts](scripts)).
+- [Reimplementation notes](reimplementation_notes.md): ideas for a clean-room firmware. **Not part of the original firmware.**
+
+See also [How to decompile](/DecompileFWs.md).
+
+## Version history
+
+### 3.1.0 - EMO becomes a news anchor
 
 **Announcement:** [[Firmware Update] 3.1.0 EMO becomes a news anchor - Updates - LivingAI Forums](https://forums.living.ai/t/firmware-update-3-1-0-emo-becomes-a-news-anchor/15619)  
 **Download:** https://download.living.ai/sd3.1.0.rar  
 **Date of release:** January 29, 2026
 
-### Description
+#### Description
 
 - **Voice Recognition:** Improved speed and accuracy for English voice commands. EMO is more responsive.
 - **Proactive Greetings:** EMO may now initiate conversation when he sees you (e.g. he might greet you unprompted).
@@ -21,13 +39,13 @@
 - **App Updates:** The app got a new “Info” tab in Settings. The Connections page was rearranged.
 - **Other:** Fixed multilingual greeting responses and date replies (now include year). Minor UI updates.
 
-## 3.0.0 - Speaks more languages and recognizes objects
+### 3.0.0 - Speaks more languages and recognizes objects
 
 **Announcement:** [[Firmware Update] 3.0.0 EMO speaks more languages and recognizes objects - Updates - LivingAI Forums](https://forums.living.ai/t/firmware-update-3-0-0-emo-speaks-more-languages-and-recognizes-objects/14939)  
 **Download:** https://download.living.ai/sd3.0.0.rar  
 **Date of release:** October 11, 2025
 
-### Description
+#### Description
 
 - **Multilingual:** EMO can *understand and speak* a total of 10 languages. In 3.0.0 he gained support for: English, 
   German, French, Italian, Spanish, Portuguese, Japanese, Korean, Chinese 
@@ -42,13 +60,13 @@
    phantom light animation (he no longer strains against being picked up).
 - **Bug Fixes:** Various important fixes improve stability and performance.
 
-## 2.9.0 - Welcome to the EMO Theater!
+### 2.9.0 - Welcome to the EMO Theater!
 
 **Announcement:** [[EMO UPDATE 2.9.0] Welcome to the EMO Theater! - Updates - LivingAI Forums](https://forums.living.ai/t/emo-update-2-9-0-welcome-to-the-emo-theater/14263)  
 
 **Date of release:** June 24, 2025
 
-### Description
+#### Description
 
 - **Theater Mode:** EMO introduces on-demand performances. The app now has a “Show – 
   Theater” section with hundreds of new animations and talk-show routines 
@@ -58,7 +76,7 @@
 - **Community Notes:** A minor bug with one animation (Spring Festival) was quickly fixed in a
    2.9.1 patch; all known issues were addressed to ensure stability.
 
-## 2.8.0 - Exercise with EMO!
+### 2.8.0 - Exercise with EMO!
 
 **Announcement:** [[EMO UPDATE 2.8.0] Exercise with EMO! - Updates - LivingAI Forums](https://forums.living.ai/t/emo-update-2-8-0-exercise-with-emo/13868) 
 
@@ -66,7 +84,7 @@
 
 **Date of release:** April 23, 2025
 
-### Description
+#### Description
 
 - **ChatGPT (Improved):** EMO can now use ChatGPT for any voice query not in his normal command list (English only, toggleable in settings). He responds to complex questions or conversation prompts after saying the trigger.
 - **Carry Mode:** New “carry mode” to relax EMO’s servos. Command “switch to carry mode” 
@@ -80,14 +98,14 @@
   instead); a new photo-themed animation added; various bug fixes and 
   optimizations.
 
-## 2.7.0 - Custom eye colors!
+### 2.7.0 - Custom eye colors!
 
 **Announcement:** [[EMO UPDATE 2.7.0] Custom eye colors! - Updates - LivingAI Forums](https://forums.living.ai/t/emo-update-2-7-0-custom-eye-colors/12511) 
 
 **Download:** https://download.living.ai/sd2.7.0.rar 
 **Date of release:** November 15, 2024
 
-### Description
+#### Description
 
 - **Custom Eye Colors:** EMO’s eye LED color can now be changed. Use commands like “set eye 
   color to red” or “change eyes to blue.” Available colors: purple, 
@@ -102,14 +120,14 @@
 - **More Songs:** Four additional songs can be sung (still via “sing a song”).
 - **Misc:** Various minor improvements and bug fixes.
 
-## 2.6.0 - Zombies are coming!
+### 2.6.0 - Zombies are coming!
 
 **Announcement:** [[EMO UPDATE 2.6.0] Zombies are coming! - Updates - LivingAI Forums](https://forums.living.ai/t/emo-update-2-6-0-zombies-are-coming/12082) 
 
 **Download:** https://download.living.ai/sd2.6.0.rar 
 **Date of release:** September 10, 2024
 
-### Description
+#### Description
 
 - **More Schedules:** Added daily schedules (8:30 Brush Teeth, 9:30/14:00 new “work” animation, 16:00 new “play” animation, 17:30 Knitting).
 - **Holiday Animations:** Added holiday activities (Father’s Day, Mother’s Day, Easter, Chinese 
@@ -130,14 +148,14 @@
   longer; EMO shows a low-battery sticker if charging without Home 
   Station.
 
-## 2.5.0 - EMO learned to sing!
+### 2.5.0 - EMO learned to sing!
 
 **Announcement:** [[A milestone update] 2.5.0 EMO learned to sing! - Updates - LivingAI Forums](https://forums.living.ai/t/a-milestone-update-2-5-0-emo-learned-to-sing/9751) 
 
 **Download:** https://download.living.ai/sd2.5.0.rar 
 **Date of release:** December 16, 2023
 
-### Description
+#### Description
 
 - **Singing:** EMO can now sing songs. Use the commands “Sing a song” or “Play a song”
    and EMO will perform a song (three new songs are included).
@@ -148,12 +166,12 @@
 - **“What can you do?” Command:** New voice commands (“What’s your ability?,” “What can you do?”) cause EMO to list his capabilities.
 - **Bug Fix:** Fixed an issue where EMO’s speech could be cut off at the end.
 
-## 2.4.0 - Welcome to EMO’s music show!
+### 2.4.0 - Welcome to EMO’s music show!
 
 **Announcement:** [[Firmware Update] 2.4.0 Welcome to EMO&#39;s music show! - Updates - LivingAI Forums](https://forums.living.ai/t/firmware-update-2-4-0-welcome-to-emos-music-show/9012)  
 **Date of release:** September 21, 2023
 
-### Description
+#### Description
 
 - **Bluetooth Speaker Mode:** EMO can act as a Bluetooth speaker. Say “Bluetooth speaker” (or “Turn 
   on Bluetooth speaker”) and pair EMO to your phone. EMO will play music 
@@ -170,24 +188,24 @@
   simultaneously.
 - **Wake-word Sensitivity:** A new app setting lets you adjust how sensitive EMO is to his wake word (“EMO”).
 
-## 2.3.1 - Some optimizations based on 2.3.0
+### 2.3.1 - Some optimizations based on 2.3.0
 
 **Announcement:** [[Firmware Update] 2.3.1 Some optimizations based on 2.3.0 - Updates - LivingAI Forums](https://forums.living.ai/t/firmware-update-2-3-1-some-optimizations-based-on-2-3-0/8654)  
 **Date of release:** August 10, 2023
 
-### Description
+#### Description
 
 - **Optimizations Only:** No new features. Stability and performance fixes related to version 2.3.0.
 - **Improvements:** Better Home Station detection and power saving (more efficient return 
   to charger), improved servo motor control, and optimized cliff detection
    when walking.
 
-## 2.3.0 - EMO understands more languages
+### 2.3.0 - EMO understands more languages
 
 **Announcement:** [[Firmware Update] 2.3.0 EMO understands more languages - Updates - LivingAI Forums](https://forums.living.ai/t/firmware-update-2-3-0-emo-understands-more-languages/8394)  
 **Date of release:** July 15, 2023
 
-### Description
+#### Description
 
 - **New Languages:** EMO can now *understand* eight additional languages (German, French, Italian, Spanish, 
   Portuguese, Japanese, Korean, Chinese). He will still reply in English, 
@@ -196,12 +214,12 @@
 - **Language Settings:** A new setting in the app lets you choose EMO’s language mode.
 - **Voice Commands List:** The app links to an “EMO Tricks” page listing supported voice commands (including in new languages).
 
-## 2.2.0 - ChatGPT and AI Painting
+### 2.2.0 - ChatGPT and AI Painting
 
 **Announcement:** [[Firmware Update] 2.2.0 ChatGPT and AI Painting - Updates - LivingAI Forums](https://forums.living.ai/t/firmware-update-2-2-0-chatgpt-and-ai-painting/7576)  
 **Date of release:** April 27, 2023
 
-### Description
+#### Description
 
 - **ChatGPT Integration:** Voice command “connect to ChatGPT” (or “connect to OpenAI”) activates 
   ChatGPT mode. EMO will then try to answer free-form questions (English 
@@ -214,12 +232,12 @@
 - **Included from 2.1.0:** Since 2.1.0 was briefly released then suspended, all of its features (Snake game, Home Station fixes, etc.) are included here.
 - **Rollout:** Gradual update rollout to all EMOs (check app later if not immediately available).
 
-## 2.1.0 - EMO Plays Snake
+### 2.1.0 - EMO Plays Snake
 
 **Announcement:** [[Firmware Update] 2.1.0 EMO Plays Snake - Updates - LivingAI Forums](https://forums.living.ai/t/firmware-update-2-1-0-emo-plays-snake/6800)  
 **Date of release:** March 11, 2023
 
-### Description
+#### Description
 
 - **New Animations:** Updated petting and shaking animations; EMO displays drawings he has 
   made (after finishing drawing or on request “show me your drawing”). New
@@ -242,12 +260,12 @@
   animations (“Pose”, “Sad”, “FlashBack dance”).
 - **Auto-update Prep:** Server-side updates delayed (manual update advised); this will be automated gradually in future.
 
-## 2.0.0 - EMO GO HOME
+### 2.0.0 - EMO GO HOME
 
 **Announcement:** [[Firmware Update] 2.0.0 EMO GO HOME - Updates - LivingAI Forums](https://forums.living.ai/t/firmware-update-2-0-0-emo-go-home/6256)  
 **Date of release:** January 29, 2023
 
-### Description
+#### Description
 
 - **Home Station (Charger):** Official support for the new Home Station charger. EMO can now “go 
   home” (return to charge) or “go off your charger” by voice commands.
@@ -259,12 +277,12 @@
 - **System Changes:** Optimized file system. Bug fixes (e.g. EMO now reliably performs morning tasks). Changed sleep time to start at 10 PM.
 - **Misc:** First major reboot of firmware versioning (fresh start for 2.x).
 
-## 1.7.0 - Do a pose~
+### 1.7.0 - Do a pose~
 
 **Announcement:** https://forums.living.ai/t/firmware-update-1-7-0-do-a-pose/5109  
 **Date of release:** October 26, 2022
 
-### Description
+#### Description
 
 - **Pose for Photos:** Say “do a pose” or “strike a pose” and EMO will pose for your camera (ready for taking pictures).
 - **Magic Show:** Say “show your magic” and EMO performs a magic trick with his wand (up to 100 different conjurings).
@@ -277,12 +295,12 @@
   schedule.
 - **Misc:** Fixed an issue where EMO became “dizzy” after alarming; various optimizations and bug fixes.
 
-## 1.6.0 - Hidden feature :)
+### 1.6.0 - Hidden feature :)
 
 **Announcement:** [[FIRMWARE UPDATE] 1.6.0 Hidden feature:) - Updates - LivingAI Forums](https://forums.living.ai/t/firmware-update-1-6-0-hidden-feature/4541)  
 **Date of release:** August 20, 2022
 
-### Description
+#### Description
 
 - **Paint Shot Game:** Two-EMO shooting game: say “EMO, put on your glasses” to enter paint 
   gun mode. Make a gun gesture and yell “Bang!” to shoot targets.
@@ -295,12 +313,12 @@
    after waking; Bug Hunt can start anytime; fixed “age” bug; other update
    and bug fixes.
 
-## 1.5.0 - EMO’s Daily Schedule
+### 1.5.0 - EMO’s Daily Schedule
 
 **Announcement:** [[FIRMWARE UPDATE] 1.5.0 EMO&#39;s Daily Schedule - Updates - LivingAI Forums](https://forums.living.ai/t/firmware-update-1-5-0-emos-daily-schedule/3995)  
 **Date of release:** June 19, 2022
 
-### Description
+#### Description
 
 - **Daily Routine:** EMO follows a schedule (eat, exercise, play, sleep at set times) and 
   announces it. (App settings allow turning off the schedule sound.)
@@ -313,12 +331,12 @@
 - **Auto-update:** EMO can now auto-install updates. If enabled, he’ll notify and automatically update when placed on the Home Station.
 - **Misc:** Other optimizations and bug fixes.
 
-## 1.3.0 - Hello friends!
+### 1.3.0 - Hello friends!
 
 **Announcement:** [[FIRMWARE UPDATE] 1.3.0 Hello friends! - Updates - LivingAI Forums](https://forums.living.ai/t/firmware-update-1-3-0-hello-friends/3011)  
 **Date of release:** February 19, 2022
 
-### Description
+#### Description
 
 - **Social Features:** When EMO sees a person’s face (or you say “look at me”), EMO may 
   initiate behaviors: look at you, ask for your name (if unknown), tell 
@@ -333,12 +351,12 @@
   nearby Wi-Fi networks. A new “Lifetime” page in the app shows EMO’s 
   unlocked achievements and learned dances.
 
-## 1.2.1 - Merry Christmas!
+### 1.2.1 - Merry Christmas!
 
 **Announcement:** [[FIRMWARE UPDATE] New update v1.2.1 Merry Christmas! - Updates - LivingAI Forums](https://forums.living.ai/t/firmware-update-new-update-v1-2-1-merry-christmas/2254)  
 **Date of release:** December 22, 2021
 
-### Description
+#### Description
 
 - **Holiday Greetings:** On special dates EMO will automatically celebrate, or you can say 
   “Merry Christmas” to trigger holiday animations and songs (new Christmas
@@ -348,12 +366,12 @@
 - **Music Reaction:** EMO now dances to music he likes; you can say “Dance to the music.”
 - **Note:** Uses special-day and animal-sound voice commands (see EMO docs for full list).
 
-## 1.2.0 - Rock-paper-scissors and custom stickers!
+### 1.2.0 - Rock-paper-scissors and custom stickers!
 
 **Announcement:** [[FIRMWARE UPDATE] New update v1.2.0 Rock-paper-scissors and custom stickers! - Updates - LivingAI Forums](https://forums.living.ai/t/firmware-update-new-update-v1-2-0-rock-paper-scissors-and-custom-stickers/1983)  
 **Date of release:** November 6, 2021
 
-### Description
+#### Description
 
 - **Rock-Paper-Scissors Game:** Say “Rock paper scissors” or “Let’s play rock paper scissors” and play 
   with EMO. EMO sees your gesture and responds (if EMO’s camera sees your 
@@ -362,23 +380,23 @@
 - **Pretend Shooting:** Say “Don’t move” or “Hands up” and then “Bang bang” or “Boom” with a finger gun gesture; EMO reacts as if shot.
 - **Custom Stickers:** New app feature to add face stickers to EMO (built-in or from your photo album).
 
-## 1.1.0 - EMO talks now!
+### 1.1.0 - EMO talks now!
 
 **Announcement:** [[FIRMWARE UPDATE] New update v1.1.0 - EMO talks now! - Updates - LivingAI Forums](https://forums.living.ai/t/firmware-update-new-update-v1-1-0-emo-talks-now/1695)  
 **Date of release:** September 7, 2021
 
-### Description
+#### Description
 
 - **Speech:** EMO can now *talk*. New voice interactivity allows chatting: ask EMO for the time, date, weather, or introduce itself. (Basic conversation.)
 - **App features:** Added photo management and face recognition settings in the app.
 - **Misc:** Shortcut links to the official website and forums. Minor optimizations and bug fixes.
 
-## 1.0.16 - Important firmware update
+### 1.0.16 - Important firmware update
 
 **Announcement:** https://forums.living.ai/t/firmware-update-important-firmware-update-1-0-16/1307  
 **Date of release:** July 23, 2021
 
-### Description
+#### Description
 
 - Fixed Wi-Fi and connectivity problems; improved online update mechanism.
 - Added a new mini-game **“Treasure Hunt.”**
@@ -386,14 +404,70 @@
 - App now shows EMO’s battery level and achievement descriptions.
 - Other bug fixes (e.g. speaker noise fix, stable mute behavior, updates now require skateboard).
 
-## 1.0.0 - Unknown Update-name
+### 1.0.0 - Unknown Update-name
 
 **Announcement:** Unknown  
 **Date of release:** Unknown (initial firmware at launch)
 
-### Description
+#### Description
 
 - Base
    launch firmware (spring/summer 2021) with EMO’s initial features 
   (movement, sounds, animations). No official changelog is available. 
   (This is the factory firmware shipped with EMO.)
+
+## Firmware analysis overview
+
+### Sources
+
+The analysis pages are based on a Ghidra decompilation of the ESP32 firmware (see [How to decompile](/DecompileFWs.md)):
+
+- `ghidraExtracted-elfPartition1.c` (82.5 MB, ~79 MB): main analysis file
+- `emo_esp32_firmware.bin.c` (16 MB, heavily stripped): secondary
+- `emo_esp32_firmware splitted/`: the flash dump split into partitions (`storage.bin` = SPIFFS, `ota_0_out.bin`, `ota_1_out.bin`, `nvs_out.bin`, …)
+
+The analyzed firmware version was not recorded. The original analysis report is dated 2025-01-05 (Ghidra decompilation + manual code review).
+
+### Evidence legend
+
+The analysis pages separate what was found in the binary from what was guessed:
+
+- **Confirmed**: the string, path or function address exists in the decompiled firmware.
+- **Inferred**: an educated guess (from naming, ESP-IDF conventions or behavior) that hasn't been verified in code or on hardware. Treat inferred values (timeouts, struct layouts, pin numbers, baud rates) as starting points, not facts.
+
+Unmarked string tables and addresses are Confirmed. Everything else says which one it is.
+
+### Hardware split: ESP32 and K210
+
+EMO has two processors connected by UART (port, pins and baud rate are **not confirmed**; see [K210 protocol](k210_protocol.md#uart-link)).
+
+| ESP32 | K210 (Kendryte AI chip) |
+| --- | --- |
+| 4 servos: left leg, left foot, right leg, right foot | Camera |
+| 2 headphone LEDs (left/right) | Screen: face/eye animations, UI |
+| 1 ToF distance sensor | Face recognition, object recognition (YOLO) |
+| 4 foot sensors (surface/fall detection) | Image processing |
+| 4 microphones | |
+| 3 touch sensors | |
+| Speaker, WiFi, Bluetooth, OTA | |
+
+Face animations are **not** on an LED matrix. They are `.avi` files on the K210's screen, triggered by the ESP32 over UART. The ESP-IDF touch driver accepts up to 10 pads (see its error checks), but the hardware uses 3.
+
+### FreeRTOS tasks
+
+Task names found in the binary (**Confirmed**):
+
+| Task | Purpose | Details |
+| --- | --- | --- |
+| `animation_player_task` | Animation queue and playback | [Animation system](animation_system.md) |
+| `behavior_task` | Autonomous/idle behavior | [Idle behavior](idle_behavior.md) |
+| `k210_uart_recv_task` / `k210_uart_trans_task` | UART link to the K210 | [K210 protocol](k210_protocol.md) |
+| `audio_status_task` | Audio playback status | [Strings and addresses](strings_and_addresses.md#3-audiospeaker-system-functions) |
+| `deal_ble_json_task` | BLE JSON commands | [Libraries](libraries.md#9-json-parsing) |
+
+Priorities and stack sizes are not known.
+
+### Storage
+
+- **NVS**: settings and state, e.g. `faceinfo_%d`, `volume`, `mic_num`, `screen_info`, `k210_kpu`, `k210_sum`, `behavior_paras`, `rec_behavior`, `show_index`, `dance_type`.
+- **SPIFFS** (`storage.bin`, offset `0xa20000`, 1 MB): `/spiffs/avi/` (face videos), `/spiffs/mot/` (motion), `/spiffs/mp3/` (audio), `/spiffs/json/profile.json`. See [Extraction](extraction.md).

@@ -3,11 +3,12 @@
 ## Description:
 Used get weather forecast.
 - Parameter *city* = Configured City
+- Parameter *later* = hours ahead, 0 or 12
 - Parameter *lon* = unused?!
 - Parameter *lat* = unused?!
 
 ### Sample Request:
-**URL:** POST GET /emo/weather/forecast?city=Bonn&later=0&lon=0.00000&lat=0.00000
+**URL:** GET /emo/weather/forecast?city=Bonn&later=0&lon=0.00000&lat=0.00000
 
 **Headers:** 
 - *Content-Type*  

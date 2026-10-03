@@ -1,7 +1,14 @@
-# EMO Firmware Function Mapping Guide
+# Strings and Addresses
 
-## Purpose
-This document provides specific function addresses, string references, and code citations from the decompiled firmware to help locate and understand each subsystem's implementation.
+String references and function addresses from the decompiled ESP32 firmware (`ghidraExtracted-elfPartition1.c`), grouped by subsystem. Use them as entry points in Ghidra and follow the cross-references from there.
+
+String tables and `FUN_` addresses are **Confirmed**. The descriptions of what a function does are educated guesses from the strings it references. See the [evidence legend](README.md#evidence-legend).
+
+Covered elsewhere:
+- Animation player, motion parser and MCPWM strings: [Animation system](animation_system.md)
+- K210 UART tasks and JSON messages: [K210 protocol](k210_protocol.md)
+- Behavior task and idle/sleep animation names: [Idle behavior](idle_behavior.md)
+- Library/ESP-IDF error strings and source paths: [Libraries](libraries.md)
 
 ---
 
@@ -163,6 +170,13 @@ Address         String                                  Path/Key
 3f4358a5        "save_custom_face_info_to_nvs"         Save function
 ```
 
+### Display
+```
+Address         String                                  Function
+3f41243f        "display_scan_result"                  Display scan result
+3f435526        "pixels: %d"                           Frame buffer pixel count
+```
+
 ### App Face Integration
 ```
 Address         String                                  Function
@@ -234,6 +248,7 @@ Address         String                                  Component
 3f445b64        "i2sMonoFix"                           Mono fix function
 3f445b70        "i2sDacDataScale"                      DAC scaling
 3f44f5f8        "I2S DAC PDM only support on I2S0"     PDM limitation
+3f44f5d2        "I2S DAC built-in only support on I2S0" DAC limitation
 ```
 
 ### Audio Playback Strings
@@ -248,6 +263,8 @@ Address         String                                  Audio Item
 3f42a39e        "audio_mid_02"                         Mid audio 2
 3f42a3ab        "audio_bounce_01"                      Bounce audio 1
 3f42a3bb        "audio_bounce_02"                      Bounce audio 2
+3f412126        "schedule_sound"                       Schedule sound
+(PTR table)     "rest_loop_01"                         Rest loop
 ```
 
 ### Sound Effect Strings
@@ -345,8 +362,10 @@ FUN_401d5c08               401d5c08        GPIO config main
 Based on function calls:
 - Servo control: Multiple GPIO pins for servo communication
 - Touch sensors: GPIO pins connected to touch pads
-- LEDs: GPIO pins for LED matrix control
+- LEDs: GPIO pins for the headphone LEDs
 - Sensors: GPIO pins for foot sensors and other inputs
+
+Various "Cannot use SET_PERI_REG_BITS" and "Cannot use CLEAR_PERI_REG_MASK" warnings show that registers are also written directly, with safety checks.
 
 ---
 
@@ -363,7 +382,10 @@ Address         String                                  Function
 3f42f53a        "set mic num %d\n"                     Set mic number
 ```
 
+`chatgpt_hear` (in a PTR table) is probably voice input for ChatGPT mode.
+
 ### MIC Security Strings (WiFi)
+These are not microphones. In WiFi security, MIC means Message Integrity Check.
 ```
 Address         String                                  Function
 3f404b0c        "MIC computation for BIP Failed(res=%d)" MIC computation
@@ -424,6 +446,7 @@ Address         String                                  Error Type
 3f426736        "touch trigger source error"           Trigger source error
 3f426751        "touch set1 bitmask error"             Set1 bitmask error
 3f42676a        "touch set2 bitmask error"             Set2 bitmask error
+(no address)    "touch work_en bitmask error"          Work-enable bitmask error
 ```
 
 ### Key Function Addresses
@@ -455,17 +478,10 @@ Address         String                                  Module
 
 ## 7. Task Architecture
 
-### Task Names
-```
-Address         String                                  Task
-3f427f20        "audio_status_task"                    Audio status monitoring
-```
-
-### Task Creation Pattern
-Look for `xTaskCreate` calls throughout the code. Key task creation areas:
-- Audio tasks: Around 0x401D0000 - 0x401E0000
-- Sensor tasks: Around 0x401D7000 - 0x401D8000
-- Motion tasks: Around 0x40258000 - 0x4025A000
+See the [FreeRTOS task list](README.md#freertos-tasks). Task-creation areas (`xTaskCreate` calls):
+- Audio: around 0x401D0000 - 0x401E0000
+- Sensors/touch: around 0x401D7000 - 0x401D8000
+- Motion/servo: around 0x40258000 - 0x4025A000
 
 ---
 
@@ -486,6 +502,9 @@ Address         String                                  Path
 3f42cba8        "/spiffs/avi/face_id.avi"              Face ID video
 3f42cbc0        "/spiffs/avi/reg_face_success.avi"     Success animation
 ```
+
+### Preference Themes
+Many `"preference theme …"` strings (e.g. for `volume_*` and `white_eye_*`, see sections 2 and 3) point to user-configurable settings: volume, eye animation and behavior preferences.
 
 ### Key Function Addresses
 ```
@@ -542,6 +561,8 @@ Address         String                                  Function
 
 ## 11. Important Memory Addresses
 
+These come from the generic ESP32 memory map, not from EMO-specific analysis (**Inferred**). Check them against the ESP32 technical reference manual.
+
 ### Hardware Registers
 ```
 Address         Description
@@ -569,17 +590,7 @@ Address Range           Description
 
 ## 12. Development Environment Clues
 
-### Source Paths Found
-```
-/home/zht/zht/master/esp-alexa/...
-/workshop/audio/esp-audio-app/components/...
-```
-
-These indicate:
-- Developer username: zht
-- Project name: esp-alexa (likely EMO's internal name)
-- ESP Audio ADF integration
-- Linux development environment
+See [Libraries: development paths](libraries.md#14-development-tools--paths).
 
 ---
 
@@ -606,6 +617,8 @@ Search for:
 ---
 
 ## 14. Function Call Patterns
+
+Typical sequences based on how the ESP-IDF APIs are normally used (**Inferred**).
 
 ### Typical Servo Control Sequence
 ```
@@ -665,49 +678,20 @@ Search for:
 
 ---
 
-## 16. Next Agent Instructions
+## 16. Function Address Ranges
 
-### To Locate Specific Functionality:
+Approximate code regions per subsystem:
 
-1. **For Servo Control**:
-   - Start at function addresses 0x40258000 - 0x4025A000
-   - Search for strings starting with "servo"
-   - Look for servo update functions by body part
+| Subsystem | Function addresses |
+| --- | --- |
+| Face/eye handlers | 0x40124000 - 0x40128000 |
+| Display / face recognition | 0x401E5000 - 0x401ED000 |
+| GPIO | 0x401D5000 - 0x401D6000 |
+| Touch sensors (RTC module) | 0x401D7000 - 0x401D8000 |
+| Audio (ESP-ADF) | 0x40246000 - 0x40252000 |
+| I2S configuration | around 0x4026A000 |
+| Servo control | 0x40258000 - 0x4025A000 |
 
-2. **For Face/Eye Animations**:
-   - Start at function addresses 0x40124000 - 0x40128000
-   - Search for strings containing "eye", "face"
-   - Check display-related functions around 0x401E5000
+To map hardware pins, find all `gpio_config` / `uart_set_pin` / `mcpwm_gpio_init` calls, pull the pin numbers out of the config structures, and cross-reference them with the servo, sensor and LED functions.
 
-3. **For Audio**:
-   - Start at function addresses 0x40246000 - 0x40252000
-   - Search for "I2S", "audio", "volume"
-   - Check I2S configuration around 0x4026A000
-
-4. **For Touch Sensors**:
-   - Start at function addresses 0x401D7000 - 0x401D8000
-   - Search for "touch_pad"
-   - All functions reference RTC module
-
-5. **For GPIO**:
-   - Start at function addresses 0x401D5000 - 0x401D6000
-   - Search for "gpio_"
-   - Look for pin number constants
-
-### To Extract Animation Data:
-1. Search for large static arrays in data sections
-2. Look for patterns of int16_t values (servo angles typically -180 to +180)
-3. Check addresses 0x3F400000 - 0x3F450000 for animation tables
-
-### To Map Hardware Pins:
-1. Find all `gpio_config` calls
-2. Extract pin numbers from configuration structures
-3. Cross-reference with servo, sensor, and LED functions
-
----
-
-## Conclusion
-
-This mapping guide provides specific addresses, strings, and function references to help locate and understand each subsystem in the EMO firmware. Use the string addresses as entry points to find related functions, and follow cross-references to understand how subsystems interact.
-
-For detailed implementation analysis, examine the functions at the provided addresses in the decompiled code. The string references serve as landmarks to navigate the large codebase effectively.
+To find animation data in the binary, search the data sections for large static arrays, in particular runs of int16 values in servo range (angles roughly -180 to +180). Check 0x3F400000 - 0x3F450000 for animation tables.

@@ -1,7 +1,6 @@
-# EMO Firmware - Libraries and Frameworks Analysis
+# Libraries
 
-## Overview
-This document identifies all libraries, frameworks, and components used in the EMO pet firmware based on analysis of the decompiled code.
+Libraries, frameworks and components inside the EMO ESP32 firmware, identified from source paths, error codes and API names in the decompiled code. Paths and strings are **Confirmed**. Version estimates and the "purpose" notes are **Inferred** (see the [evidence legend](README.md#evidence-legend)).
 
 ---
 
@@ -100,7 +99,8 @@ Components:
 
 **Purpose**: Key-value storage in flash memory for configuration data.
 
-**Error Codes Found**:
+<details><summary>Error Codes Found (23)</summary>
+
 - `ESP_ERR_NVS_NOT_INITIALIZED`
 - `ESP_ERR_NVS_NOT_FOUND`
 - `ESP_ERR_NVS_TYPE_MISMATCH`
@@ -125,6 +125,8 @@ Components:
 - `ESP_ERR_NVS_CORRUPT_KEY_PART`
 - `ESP_ERR_NVS_CONTENT_DIFFERS`
 
+</details>
+
 **Usage in EMO**:
 - Face recognition data storage
 - Volume settings
@@ -133,14 +135,8 @@ Components:
 - User preferences
 
 ### 2.2 SPIFFS (SPI Flash File System)
-```
-File Paths Found:
-- /spiffs/avi/face_id.avi
-- /spiffs/avi/reg_face_success.avi
-- /spiffs/json/profile.json
-```
 
-**Purpose**: File system for storing animation files, audio files, and configuration JSON files.
+**Purpose**: File system for animation, audio and JSON config files. For the directory layout see [Storage](README.md#storage), and for getting the files out see [Extraction](extraction.md).
 
 ### 2.3 VFS (Virtual File System)
 ```
@@ -168,7 +164,8 @@ Key Strings:
 - "esp_wifi_scan_get_ap_records()"
 ```
 
-**Error Codes**:
+<details><summary>Error Codes (21)</summary>
+
 - `ESP_ERR_WIFI_NOT_INIT`
 - `ESP_ERR_WIFI_NOT_STARTED`
 - `ESP_ERR_WIFI_NOT_STOPPED`
@@ -191,6 +188,8 @@ Key Strings:
 - `ESP_ERR_WIFI_WPS_TYPE`
 - `ESP_ERR_WIFI_WPS_SM`
 
+</details>
+
 **Features**:
 - Station mode (client)
 - AP mode (access point)
@@ -205,7 +204,8 @@ Location: /home/zht/esp/idf/components/tcpip_adapter/
 Purpose: Network interface abstraction layer
 ```
 
-**Error Codes**:
+<details><summary>Error Codes (7)</summary>
+
 - `ESP_ERR_TCPIP_ADAPTER_INVALID_PARAMS`
 - `ESP_ERR_TCPIP_ADAPTER_IF_NOT_READY`
 - `ESP_ERR_TCPIP_ADAPTER_DHCPC_START_FAILED`
@@ -213,6 +213,8 @@ Purpose: Network interface abstraction layer
 - `ESP_ERR_TCPIP_ADAPTER_DHCP_ALREADY_STOPPED`
 - `ESP_ERR_TCPIP_ADAPTER_NO_MEM`
 - `ESP_ERR_TCPIP_ADAPTER_DHCP_NOT_STOPPED`
+
+</details>
 
 ### 3.3 LwIP (Lightweight IP)
 ```
@@ -232,8 +234,8 @@ References Found:
 - Raw sockets
 
 ### 3.4 ESP-NOW
-```
-Error Codes:
+<details><summary>Error Codes (8)</summary>
+
 - ESP_ERR_ESPNOW_NOT_INIT
 - ESP_ERR_ESPNOW_ARG
 - ESP_ERR_ESPNOW_NO_MEM
@@ -242,13 +244,14 @@ Error Codes:
 - ESP_ERR_ESPNOW_INTERNAL
 - ESP_ERR_ESPNOW_EXIST
 - ESP_ERR_ESPNOW_IF
-```
+
+</details>
 
 **Purpose**: Connectionless WiFi communication protocol.
 
 ### 3.5 ESP Mesh
-```
-Error Codes:
+<details><summary>Error Codes (22)</summary>
+
 - ESP_ERR_MESH_WIFI_NOT_START
 - ESP_ERR_MESH_NOT_INIT
 - ESP_ERR_MESH_NOT_CONFIG
@@ -271,7 +274,8 @@ Error Codes:
 - ESP_ERR_MESH_DISCARD_DUPLICATE
 - ESP_ERR_MESH_DISCARD
 - ESP_ERR_MESH_VOTING
-```
+
+</details>
 
 **Purpose**: WiFi mesh networking (may not be actively used).
 
@@ -342,7 +346,7 @@ References:
 - "EMO_SPEAKER_%02X%02X"
 ```
 
-**Purpose**: Bluetooth speaker functionality using A2DP profile.
+**Purpose**: Bluetooth speaker functionality using the A2DP profile (see [/Bluetooth](/Bluetooth)).
 
 ---
 
@@ -375,15 +379,16 @@ Error Codes:
 - SHA hashing
 
 ### 5.2 ESP-TLS
-```
-Error Codes:
+<details><summary>Error Codes (6)</summary>
+
 - ESP_ERR_ESP_TLS_CANNOT_RESOLVE_HOSTNAME
 - ESP_ERR_ESP_TLS_CANNOT_CREATE_SOCKET
 - ESP_ERR_ESP_TLS_UNSUPPORTED_PROTOCOL_FAMILY
 - ESP_ERR_ESP_TLS_FAILED_CONNECT_TO_HOST
 - ESP_ERR_ESP_TLS_SOCKET_SETOPT_FAILED
 - ESP_ERR_ESP_TLS_CONNECTION_TIMEOUT
-```
+
+</details>
 
 **Purpose**: ESP-IDF wrapper for mbedTLS.
 
@@ -399,8 +404,8 @@ Location: /home/zht/esp/idf/components/wpa_supplicant/
 ## 6. HTTP & Web Components
 
 ### 6.1 HTTP Client
-```
-Error Codes:
+<details><summary>Error Codes (7)</summary>
+
 - ESP_ERR_HTTP_MAX_REDIRECT
 - ESP_ERR_HTTP_CONNECT
 - ESP_ERR_HTTP_WRITE_DATA
@@ -408,7 +413,8 @@ Error Codes:
 - ESP_ERR_HTTP_INVALID_TRANSPORT
 - ESP_ERR_HTTP_CONNECTING
 - ESP_ERR_HTTP_EAGAIN
-```
+
+</details>
 
 **HTTP Requests Found**:
 ```c
@@ -423,8 +429,8 @@ Error Codes:
 **Purpose**: HTTP client for OTA updates and API communication.
 
 ### 6.2 HTTP Server (HTTPD)
-```
-Error Codes:
+<details><summary>Error Codes (8)</summary>
+
 - ESP_ERR_HTTPD_HANDLERS_FULL
 - ESP_ERR_HTTPD_HANDLER_EXISTS
 - ESP_ERR_HTTPD_INVALID_REQ
@@ -433,15 +439,17 @@ Error Codes:
 - ESP_ERR_HTTPD_RESP_SEND
 - ESP_ERR_HTTPD_ALLOC_MEM
 - ESP_ERR_HTTPD_TASK
-```
+
+</details>
 
 **Purpose**: HTTP server for web interface (if used).
 
 ### 6.3 HTTPS OTA
-```
-Error Codes:
+<details><summary>Error Codes (1)</summary>
+
 - ESP_ERR_HTTPS_OTA_IN_PROGRESS
-```
+
+</details>
 
 **Purpose**: Secure OTA updates over HTTPS.
 
@@ -462,13 +470,16 @@ Functions Found:
 - esp_ota_init()
 ```
 
-**Error Codes**:
+<details><summary>Error Codes (6)</summary>
+
 - `ESP_ERR_OTA_PARTITION_CONFLICT`
 - `ESP_ERR_OTA_SELECT_INFO_INVALID`
 - `ESP_ERR_OTA_VALIDATE_FAILED`
 - `ESP_ERR_OTA_SMALL_SEC_VER`
 - `ESP_ERR_OTA_ROLLBACK_FAILED`
 - `ESP_ERR_OTA_ROLLBACK_INVALID_STATE`
+
+</details>
 
 **OTA Strings Found**:
 ```
@@ -501,28 +512,7 @@ Components:
 - audio_pipeline/       - Audio pipeline
 ```
 
-**Key Strings**:
-```
-"ESP_AUDIO"                    - ESP Audio framework
-"AUDIO_STREAM"                 - Audio stream component
-"I2S_STREAM"                   - I2S audio stream
-"I2S_WRITER"                   - I2S output
-"I2S_READER"                   - I2S input
-"CreateI2sStreamReader"        - Create I2S reader
-"CreateI2sStreamWriter"        - Create I2S writer
-"AudioStreamI2sGet"            - Get I2S stream
-```
-
-**Error Codes**:
-```
-"AUDIO_ERR_UNKNOWN"
-"CODEC"
-"STREAM_I2S_READ_ERROR"
-"STREAM_I2S_WRITE_ERROR"
-"SOFTCODEC_INTI_ERROR"
-"SOFTCODEC_ENCODE_DECODE_ERROR"
-"PLAYER_NO_AUDIO_AVAILABLE"
-```
+Strings and error codes (`ESP_AUDIO`, `I2S_STREAM`, `AUDIO_ERR_UNKNOWN`, …) with their addresses: see [Strings and addresses](strings_and_addresses.md#esp-audio-framework-strings).
 
 **Purpose**: Complete audio framework for playback, recording, and processing.
 
@@ -575,13 +565,16 @@ Components:
 - flash_ops.c          - Flash operations
 ```
 
-**Error Codes**:
+<details><summary>Error Codes (6)</summary>
+
 - `ESP_ERR_FLASH_OP_FAIL`
 - `ESP_ERR_FLASH_OP_TIMEOUT`
 - `ESP_ERR_FLASH_NOT_INITIALISED`
 - `ESP_ERR_FLASH_UNSUPPORTED_HOST`
 - `ESP_ERR_FLASH_UNSUPPORTED_CHIP`
 - `ESP_ERR_FLASH_PROTECTED`
+
+</details>
 
 ### 10.2 GPIO Driver
 ```
@@ -728,40 +721,44 @@ Location: /home/zht/esp/idf/components/esp_ringbuf/
 ## 12. Additional Libraries
 
 ### 12.1 ULP (Ultra Low Power) Coprocessor
-```
-Error Codes:
+<details><summary>Error Codes (5)</summary>
+
 - ESP_ERR_ULP_SIZE_TOO_BIG
 - ESP_ERR_ULP_INVALID_LOAD_ADDR
 - ESP_ERR_ULP_DUPLICATE_LABEL
 - ESP_ERR_ULP_UNDEFINED_LABEL
 - ESP_ERR_ULP_BRANCH_OUT_OF_RANGE
-```
+
+</details>
 
 **Purpose**: Ultra-low-power coprocessor for sensor reading during deep sleep.
 
 ### 12.2 Ping
-```
-Error Codes:
+<details><summary>Error Codes (2)</summary>
+
 - ESP_ERR_PING_INVALID_PARAMS
 - ESP_ERR_PING_NO_MEM
-```
+
+</details>
 
 **Purpose**: ICMP ping utility.
 
 ### 12.3 Image Processing
-```
-Error Codes:
+<details><summary>Error Codes (2)</summary>
+
 - ESP_ERR_IMAGE_FLASH_FAIL
 - ESP_ERR_IMAGE_INVALID
-```
+
+</details>
 
 **Purpose**: Image validation and processing.
 
 ### 12.4 Coding
-```
-Error Code:
+<details><summary>Error Code (1)</summary>
+
 - ESP_ERR_CODING
-```
+
+</details>
 
 **Purpose**: Data encoding/decoding utilities.
 
@@ -913,7 +910,7 @@ Based on error codes and function references:
 - TCP/UDP sockets
 
 ✅ **Sensors**
-- Touch sensors (10 pads)
+- Touch sensors (driver supports 10 pads; EMO has 3)
 - GPIO
 - ADC
 - IMU (external, via I2C/SPI)
@@ -937,45 +934,6 @@ Based on error codes and function references:
 
 ## 20. Recommendations for Reimplementation
 
-### Must-Have Libraries
-1. **ESP-IDF** (latest stable version)
-2. **FreeRTOS** (included in ESP-IDF)
-3. **ESP Audio ADF** (for audio features)
-4. **cJSON** (for JSON parsing)
-5. **mbedTLS** (for security)
-
-### Optional Libraries
-1. **ESP-NOW** (if peer-to-peer communication needed)
-2. **BLE Mesh** (if mesh networking needed)
-3. **HTTP Server** (if web interface needed)
-
-### Development Setup
-```bash
-# Install ESP-IDF
-git clone --recursive https://github.com/espressif/esp-idf.git
-cd esp-idf
-./install.sh
-
-# Install ESP-ADF
-git clone --recursive https://github.com/espressif/esp-adf.git
-export ADF_PATH=$PWD/esp-adf
-
-# Set up environment
-. $HOME/esp/esp-idf/export.sh
-```
+See [Reimplementation notes](reimplementation_notes.md#libraries).
 
 ---
-
-## Conclusion
-
-The EMO firmware is built on a solid foundation of industry-standard libraries and frameworks:
-
-- **Core**: ESP-IDF with FreeRTOS
-- **Networking**: LwIP, WiFi, Bluetooth (Bluedroid)
-- **Security**: mbedTLS, WPA Supplicant
-- **Audio**: ESP Audio ADF with I2S
-- **Storage**: NVS, SPIFFS
-- **Parsing**: cJSON
-- **Updates**: OTA system
-
-All major components are well-documented and actively maintained by Espressif, making reimplementation straightforward with proper licensing and attribution.
