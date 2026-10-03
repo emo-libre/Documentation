@@ -4,7 +4,9 @@
 Check for new firmware.  
 
 ### Sample Request:
-**URL:** GET /emo/ota/version HTTP/1.0  
+**URL:** GET /emo/ota/version?type=1&version_num=42 HTTP/1.0  
+- Parameter *type* = always 1 (firmware 3.x)
+- Parameter *version_num* = current firmware version (firmware 3.x)  
 
 **Headers:**  
 - *Authorization*  
@@ -12,3 +14,4 @@ Check for new firmware.
 
 ### Sample Response:
 {"version-name":"1.4.0","version-num":21}
+firmware 3.x: {"version-name":"1.1.1","version-num":1}
